@@ -7,7 +7,7 @@ from bilstm_ffnn_pretrained import BiLSTM_FFNN_PRE
 from bilstm_ffnn_random import BiLSTM_FFNN_RANDOM
 from qc_dataset import QCDataset
 from collate import qc_collate_fn_bilstm,qc_collate_fn_bow
-from evaluation import get_accuracy_bow,get_accuracy_bilstm,get_confusion_matrix,get_micro_f1
+from evaluation import get_accuracy_bow,get_accuracy_bilstm,get_confusion_matrix,get_micro_f1,get_macro_f1
 from torch.utils.data.dataloader import DataLoader
 
 class Train:
@@ -113,9 +113,11 @@ class Train:
             acc,y_real,y_pre = get_accuracy_bilstm(model, loader_dev)
             conf_mat = get_confusion_matrix(y_real,y_pre,len(labels_index))
             micro_f1 = get_micro_f1(conf_mat)
+            macro_f1 = get_macro_f1(conf_mat)
             print( "The accuray after training is : " , acc )
             print("Confusion Matrix:\n",conf_mat)
             print("Micro F1: ",micro_f1)
+            print("Macro F1: ",macro_f1)
 
         if(self.config['model']=='bow'):
             for epoch in range(int(self.config['epoch'])):
@@ -143,6 +145,8 @@ class Train:
             acc,y_real,y_pre = get_accuracy_bow(model, loader_dev)
             conf_mat = get_confusion_matrix(y_real,y_pre,len(labels_index))
             micro_f1 = get_micro_f1(conf_mat)
+            macro_f1 = get_macro_f1(conf_mat)
             print( "The accuray after training is : " , acc )
             print("Confusion Matrix:\n",conf_mat)
             print("Micro F1: ",micro_f1)
+            print("Macro F1: ",macro_f1)
